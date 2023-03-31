@@ -1,8 +1,10 @@
-import EXPENSE from '../data/dummy-data';
+import { useSelector } from 'react-redux';
 
 const useExpense = (dayPeriod: number) => {
   const filteredDate = Date.now() - dayPeriod * 24 * 60 * 60000;
-  const list: any[] = EXPENSE?.filter(
+  const expense = useSelector((state: any) => state.expense?.data);
+
+  const list: any[] = expense?.filter(
     (e: any) => Date.parse(e.date) >= filteredDate
   );
   const summary: number = list
