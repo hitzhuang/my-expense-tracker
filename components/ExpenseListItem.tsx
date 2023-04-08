@@ -5,7 +5,8 @@ import appStyles from '../styles/appStyles';
 const ExpenseListItem = ({ data }: any) => {
   const navigate: any = useNavigation();
   const handlePress = () => {
-    navigate.navigate('Manage Expense', { id: data.id });
+    const date: string = data.date.toUTCString();
+    navigate.navigate('Manage Expense', { ...data, date });
   };
   return (
     <Pressable
@@ -15,7 +16,15 @@ const ExpenseListItem = ({ data }: any) => {
       <View style={styles.container}>
         <View>
           <Text style={styles.desc}>{data.desc}</Text>
-          <Text style={styles.date}>{data.date.toLocaleString()}</Text>
+          <Text style={styles.date}>
+            {data.date.toLocaleString([], {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </Text>
         </View>
         <View>
           <Text style={styles.amount}>${data.amount}</Text>

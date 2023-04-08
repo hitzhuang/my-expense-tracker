@@ -50,12 +50,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    margin: 20,
+    margin: 15,
     textAlign: 'center',
     fontWeight: 'bold',
   },
   icon: {
-    padding: 15,
+    padding: 10,
   },
 });
 

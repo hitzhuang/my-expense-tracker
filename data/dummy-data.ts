@@ -2,9 +2,11 @@ import { faker } from '@faker-js/faker';
 
 const EXPENSE: any[] = [];
 
+export const generateExpenseId = () => 'e' + EXPENSE.length;
+
 for (let i = 0; i < 50; i++) {
   EXPENSE.push({
-    id: 'e' + i.toString(),
+    id: generateExpenseId(),
     desc: faker.commerce.product(),
     date: faker.date.past(),
     amount: faker.finance.amount(1, 1000, 0),

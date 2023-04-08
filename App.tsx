@@ -1,17 +1,16 @@
+import { Provider } from 'react-redux';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { store } from './store/store';
 import appStyles from './styles/appStyles';
 import AllExpense from './screens/AllExpense';
 import ManageExpense from './screens/ManageExpense';
 import RecentExpense from './screens/RecentExpense';
 import IconButton from './components/IconButton';
-import { Provider } from 'react-redux';
-import { store } from './store/store';
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
@@ -69,6 +68,8 @@ export default function App() {
             screenOptions={{
               headerStyle: {
                 backgroundColor: appStyles.colors.blackColor,
+                // @ts-expect-error
+                borderBottomColor: appStyles.colors.darkGoldColor,
               },
               headerTintColor: appStyles.colors.goldColor,
             }}

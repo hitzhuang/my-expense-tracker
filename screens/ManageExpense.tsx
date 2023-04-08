@@ -1,10 +1,15 @@
 import { useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { StyleSheet, View } from 'react-native';
+import {
+  addExpense,
+  removeExpense,
+  updateExpense,
+} from '../store/redux/expense';
 import appStyles from '../styles/appStyles';
 import screenStyles from '../styles/screenStyles';
+import ExpenseForm from '../components/ExpenseForm';
 import ActionButton from '../components/ActionButton';
-import { removeExpense } from '../store/redux/expense';
 
 const ManageExpense = ({ route, navigation }: any) => {
   const id = route.params?.id;
@@ -13,14 +18,15 @@ const ManageExpense = ({ route, navigation }: any) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: id ? 'Edit Expense' : 'New Expense',
-      headerStyle: {
-        backgroundColor: appStyles.colors.blackColor,
-        borderBottomColor: appStyles.colors.darkGoldColor,
-      },
     });
-  }, [route, navigation]);
+  }, [navigation]);
 
-  const handleConfirm = () => {
+  const handleConfirm = (data: any) => {
+    if (data.id === undefined) {
+      dispatch(addExpense(data));
+    } else {
+      dispatch(updateExpense(data));
+    }
     handleClose();
   };
   const handleDelete = () => {
@@ -30,33 +36,6 @@ const ManageExpense = ({ route, navigation }: any) => {
   const handleClose = () => {
     navigation.goBack();
   };
-
-  const renderActionButtons = () => (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-      }}
-    >
-      <View style={{ flex: 1, marginHorizontal: 5 }}>
-        <ActionButton
-          title="Cancel"
-          color={appStyles.colors.darkColor}
-          backgroundColor={appStyles.colors.lightGrayColor}
-          onPress={handleClose}
-        />
-      </View>
-      <View style={{ flex: 1, marginHorizontal: 5 }}>
-        <ActionButton
-          title={id ? 'Update' : 'Add'}
-          color={appStyles.colors.lightColor}
-          backgroundColor={appStyles.colors.darkGoldColor}
-          onPress={handleConfirm}
-        />
-      </View>
-    </View>
-  );
 
   const renderDeleteButton = () => (
     <View
@@ -75,7 +54,11 @@ const ManageExpense = ({ route, navigation }: any) => {
 
   return (
     <View style={screenStyles.container}>
-      {renderActionButtons()}
+      <ExpenseForm
+        data={route.params}
+        onConfirm={handleConfirm}
+        onCancel={handleClose}
+      />
       {id !== undefined && renderDeleteButton()}
     </View>
   );

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import EXPENSE from '../../data/dummy-data';
+import EXPENSE, { generateExpenseId } from '../../data/dummy-data';
 
 interface IExpense {
   data: any[];
@@ -14,7 +14,16 @@ const expenseSlice = createSlice({
   initialState,
   reducers: {
     addExpense: (state, action: PayloadAction<any>) => {
-      state.data = [...state.data, action.payload];
+      let data = { ...action.payload, id: generateExpenseId() };
+      state.data = [...state.data, data].sort((a, b) => b.date - a.date);
+    },
+    updateExpense: (state, action: PayloadAction<any>) => {
+      let data = [...state.data];
+      let index = data.findIndex((d: any) => d.id === action.payload.id);
+      if (index !== -1) {
+        data[index] = action.payload;
+        state.data = [...data];
+      }
     },
     removeExpense: (state, action: PayloadAction<string>) => {
       state.data = state.data.filter((item) => item.id !== action.payload);
@@ -22,5 +31,6 @@ const expenseSlice = createSlice({
   },
 });
 
-export const { addExpense, removeExpense } = expenseSlice.actions;
+export const { addExpense, updateExpense, removeExpense } =
+  expenseSlice.actions;
 export default expenseSlice.reducer;
