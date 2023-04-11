@@ -4,7 +4,6 @@ import appStyles from './appStyles';
 const screenStyles = StyleSheet.create({
   container: {
     flex: 1,
-
     backgroundColor: appStyles.colors.darkColor,
     padding: 20,
   },

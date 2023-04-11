@@ -10,6 +10,14 @@ import appStyles from '../styles/appStyles';
 import screenStyles from '../styles/screenStyles';
 import ExpenseForm from '../components/ExpenseForm';
 import ActionButton from '../components/ActionButton';
+import Screen from './Screen';
+import {
+  createDatabaseExpense,
+  deleteDatabaseExpense,
+  updateDatabaseExpense,
+} from '../firebase/expense';
+import { setLoading } from '../store/redux/loading';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 const ManageExpense = ({ route, navigation }: any) => {
   const id = route.params?.id;
@@ -21,18 +29,36 @@ const ManageExpense = ({ route, navigation }: any) => {
     });
   }, [navigation]);
 
-  const handleConfirm = (data: any) => {
-    if (data.id === undefined) {
-      dispatch(addExpense(data));
-    } else {
-      dispatch(updateExpense(data));
+  const handleConfirm = async (data: any) => {
+    dispatch(setLoading(true));
+    try {
+      let msg = 'Expense has been added.';
+      if (data.id === undefined) {
+        dispatch(addExpense(await createDatabaseExpense(data)));
+      } else {
+        msg = 'Expense has been updated.';
+        dispatch(updateExpense(await updateDatabaseExpense(data.id, data)));
+      }
+      Toast.show({ type: 'success', text1: msg });
+      handleClose();
+    } catch (error) {
+      Toast.show({ type: 'failure', text1: 'Opps...Something goes wrong!' });
     }
-    handleClose();
+    dispatch(setLoading(false));
   };
-  const handleDelete = () => {
-    dispatch(removeExpense(id));
-    handleClose();
+
+  const handleDelete = async () => {
+    dispatch(setLoading(true));
+    try {
+      dispatch(removeExpense(await deleteDatabaseExpense(id)));
+      Toast.show({ type: 'success', text1: 'Expense has been deleted.' });
+      handleClose();
+    } catch (error) {
+      Toast.show({ type: 'failure', text1: 'Opps...Something goes wrong!' });
+    }
+    dispatch(setLoading(false));
   };
+
   const handleClose = () => {
     navigation.goBack();
   };
@@ -53,23 +79,15 @@ const ManageExpense = ({ route, navigation }: any) => {
   );
 
   return (
-    <View style={screenStyles.container}>
+    <Screen style={screenStyles.container}>
       <ExpenseForm
         data={route.params}
         onConfirm={handleConfirm}
         onCancel={handleClose}
       />
       {id !== undefined && renderDeleteButton()}
-    </View>
+    </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-around',
-    backgroundColor: appStyles.colors.darkColor,
-  },
-});
 
 export default ManageExpense;

@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import IOSDatepickerInput from './IOSDatepickerInput';
 import AndroidDatepickerInput from './AndroidDatepickerInput';
-import appStyles from '../styles/appStyles';
 
 interface FormTextInputProps {
   inputStyle: {
@@ -35,6 +34,7 @@ const FormTextInput = ({
     const date = data ? new Date(data) : new Date();
     const handleChange = (e: Date | undefined) =>
       e && onChange(e.toUTCString());
+
     return Platform.OS === 'android' ? (
       <AndroidDatepickerInput date={date} onChange={handleChange} />
     ) : Platform.OS === 'ios' ? (
@@ -55,25 +55,25 @@ const FormTextInput = ({
     );
   };
 
+  const renderTextInput = (inputMode: InputModeOptions | undefined) => (
+    <>
+      <TextInput
+        style={[styles.input, inputStyle, error ? styles.errorStyle : null]}
+        inputMode={inputMode}
+        cursorColor={error ? styles.errorStyle.color : inputStyle.color}
+        value={data}
+        onChangeText={onChange}
+      />
+      {error && <Text style={styles.errorText}>{error}</Text>}
+    </>
+  );
+
   return (
     <View style={styles.container}>
       <Text style={[styles.label, { color: inputStyle.backgroundColor }]}>
         {label}
       </Text>
-      {inputMode === 'date' ? (
-        renderDatePicker()
-      ) : (
-        <>
-          <TextInput
-            style={[styles.input, inputStyle, error ? styles.errorStyle : null]}
-            inputMode={inputMode}
-            cursorColor={error ? styles.errorStyle.color : inputStyle.color}
-            value={data}
-            onChangeText={onChange}
-          />
-          {error && <Text style={styles.errorText}>{error}</Text>}
-        </>
-      )}
+      {inputMode === 'date' ? renderDatePicker() : renderTextInput(inputMode)}
     </View>
   );
 };

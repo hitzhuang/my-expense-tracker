@@ -1,20 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import EXPENSE, { generateExpenseId } from '../../data/dummy-data';
 
 interface IExpense {
   data: any[];
 }
 
 const initialState: IExpense = {
-  data: EXPENSE,
+  data: [],
 };
 
 const expenseSlice = createSlice({
   name: 'expense',
   initialState,
   reducers: {
+    initExpense: (state, action: PayloadAction<any>) => {
+      state.data = action.payload;
+    },
     addExpense: (state, action: PayloadAction<any>) => {
-      let data = { ...action.payload, id: generateExpenseId() };
+      let data = { ...action.payload };
       state.data = [...state.data, data].sort((a, b) => b.date - a.date);
     },
     updateExpense: (state, action: PayloadAction<any>) => {
@@ -25,12 +27,12 @@ const expenseSlice = createSlice({
         state.data = [...data];
       }
     },
-    removeExpense: (state, action: PayloadAction<string>) => {
+    removeExpense: (state, action: PayloadAction<any>) => {
       state.data = state.data.filter((item) => item.id !== action.payload);
     },
   },
 });
 
-export const { addExpense, updateExpense, removeExpense } =
+export const { initExpense, addExpense, updateExpense, removeExpense } =
   expenseSlice.actions;
 export default expenseSlice.reducer;

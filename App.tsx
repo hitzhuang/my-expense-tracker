@@ -11,6 +11,7 @@ import AllExpense from './screens/AllExpense';
 import ManageExpense from './screens/ManageExpense';
 import RecentExpense from './screens/RecentExpense';
 import IconButton from './components/IconButton';
+import ToastView from './components/ToastView';
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
@@ -89,6 +90,7 @@ export default function App() {
               }}
             />
           </Stack.Navigator>
+          <ToastView />
         </Provider>
       </NavigationContainer>
     </View>
