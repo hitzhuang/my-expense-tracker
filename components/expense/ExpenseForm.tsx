@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
-import appStyles from '../styles/appStyles';
-import ActionButton from './ActionButton';
-import FormTextInput from './FormTextInput';
+import appStyles from '../../styles/appStyles';
+import ActionButton from '../ActionButton';
+import FormTextInput from '../FormTextInput';
 
 interface ExpenseFormProps {
   data?: any;

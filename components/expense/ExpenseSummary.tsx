@@ -1,6 +1,5 @@
-import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import appStyles from '../styles/appStyles';
+import appStyles from '../../styles/appStyles';
 
 interface ExpenseSummaryProps {
   total: number;

@@ -1,6 +1,6 @@
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import appStyles from '../styles/appStyles';
-import screenStyles from '../styles/screenStyles';
+import appStyles from '../../styles/appStyles';
+import screenStyles from '../../styles/screenStyles';
 
 const LoadingView = () => {
   return (

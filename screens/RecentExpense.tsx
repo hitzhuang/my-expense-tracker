@@ -1,5 +1,5 @@
-import ExpenseList from '../components/ExpenseList';
-import ExpenseSummary from '../components/ExpenseSummary';
+import ExpenseList from '../components/expense/ExpenseList';
+import ExpenseSummary from '../components/expense/ExpenseSummary';
 import useExpense from '../hooks/useExpense';
 import screenStyles from '../styles/screenStyles';
 import Screen from './Screen';

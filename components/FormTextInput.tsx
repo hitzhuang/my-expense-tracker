@@ -14,8 +14,8 @@ interface FormTextInputProps {
     color: string;
     backgroundColor: string;
   };
-
   inputMode?: InputModeOptions | 'date' | undefined;
+  secureTextEntry?: boolean;
   label: string;
   data?: any;
   onChange: (e: any) => void;
@@ -25,6 +25,7 @@ interface FormTextInputProps {
 const FormTextInput = ({
   inputStyle,
   inputMode,
+  secureTextEntry = false,
   data,
   label,
   onChange,
@@ -60,6 +61,7 @@ const FormTextInput = ({
       <TextInput
         style={[styles.input, inputStyle, error ? styles.errorStyle : null]}
         inputMode={inputMode}
+        secureTextEntry={secureTextEntry}
         cursorColor={error ? styles.errorStyle.color : inputStyle.color}
         value={data}
         onChangeText={onChange}
@@ -87,6 +89,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     paddingVertical: 5,
+    letterSpacing: 2,
   },
   input: {
     fontWeight: 'bold',

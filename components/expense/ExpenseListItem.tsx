@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import appStyles from '../styles/appStyles';
+import appStyles from '../../styles/appStyles';
 
 const ExpenseListItem = ({ data }: any) => {
   const navigate: any = useNavigation();

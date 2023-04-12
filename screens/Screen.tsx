@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
-import LoadingView from '../components/LoadingView';
+import LoadingView from '../components/view/LoadingView';
 
 interface ScreenProps {
   style?: StyleProp<ViewStyle> | undefined;

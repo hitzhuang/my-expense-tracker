@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     margin: 15,
     textAlign: 'center',
     fontWeight: 'bold',
+    letterSpacing: 2,
   },
   icon: {
     padding: 10,

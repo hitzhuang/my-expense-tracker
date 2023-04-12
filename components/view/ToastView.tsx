@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import appStyles from '../styles/appStyles';
+import appStyles from '../../styles/appStyles';
 
 const ToastView = () => {
   const config = {

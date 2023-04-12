@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import {
   addExpense,
   removeExpense,
@@ -8,7 +8,7 @@ import {
 } from '../store/redux/expense';
 import appStyles from '../styles/appStyles';
 import screenStyles from '../styles/screenStyles';
-import ExpenseForm from '../components/ExpenseForm';
+import ExpenseForm from '../components/expense/ExpenseForm';
 import ActionButton from '../components/ActionButton';
 import Screen from './Screen';
 import {
