@@ -1,9 +1,13 @@
 import { useState } from 'react';
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import ActionButton from './ActionButton';
 import appStyles from '../styles/appStyles';
 import FormTextInput from './FormTextInput';
 import authStyles from '../styles/authStyles';
+import { useDispatch } from 'react-redux';
+import { setLoading } from '../store/redux/loading';
+import { signupUser } from '../firebase/user';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 interface SignupFormProps {
   gotoLogin: () => void;
@@ -11,6 +15,7 @@ interface SignupFormProps {
 }
 
 const SignupForm = ({ gotoLogin, onSignup }: SignupFormProps) => {
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,8 +23,45 @@ const SignupForm = ({ gotoLogin, onSignup }: SignupFormProps) => {
   const [errors, setErrors] = useState<any>({});
 
   const handleSignup = () => {
-    // validate inputs
-    onSignup({ email, password });
+    let defaultErrors: any = {};
+    if (!name) {
+      defaultErrors['name'] = 'Field is required.';
+    }
+    if (!email) {
+      defaultErrors['email'] = 'Field is required.';
+    }
+    if (!password) {
+      defaultErrors['password'] = 'Field is required.';
+    }
+    if (!recheckPassword) {
+      defaultErrors['recheckPassword'] = 'Field is required.';
+    }
+    if (password !== recheckPassword) {
+      defaultErrors['password'] = 'Password is not matched.';
+      defaultErrors['recheckPassword'] = 'Confirm Password is not matched.';
+    }
+    if (Object.keys(defaultErrors).length !== 0) {
+      setErrors(defaultErrors);
+      return;
+    }
+    dispatch(setLoading(true));
+    signupUser(name, email, password)
+      .then((user) => onSignup(user))
+      .catch((error: string) => {
+        switch (error) {
+          case 'auth/invalid-email':
+            defaultErrors['email'] = 'Invalid email format.';
+            break;
+          case 'auth/email-already-in-use':
+            defaultErrors['email'] = 'Email has been taken.';
+            break;
+          default:
+            Toast.show({ type: 'failure', text1: error });
+            break;
+        }
+        setErrors(defaultErrors);
+      })
+      .finally(() => dispatch(setLoading(false)));
   };
 
   const renderFieldInputs = () => (
@@ -42,6 +84,7 @@ const SignupForm = ({ gotoLogin, onSignup }: SignupFormProps) => {
       <FormTextInput
         label="Password"
         inputStyle={authStyles.inputStyle}
+        secureTextEntry={true}
         data={password}
         onChange={(e) => setPassword(e)}
         error={errors.password}
@@ -49,6 +92,7 @@ const SignupForm = ({ gotoLogin, onSignup }: SignupFormProps) => {
       <FormTextInput
         label="Confirm Password"
         inputStyle={authStyles.inputStyle}
+        secureTextEntry={true}
         data={recheckPassword}
         onChange={(e) => setRecheckPassword(e)}
         error={errors.recheckPassword}
@@ -71,10 +115,10 @@ const SignupForm = ({ gotoLogin, onSignup }: SignupFormProps) => {
   );
 
   return (
-    <View>
+    <ScrollView automaticallyAdjustKeyboardInsets={true}>
       {renderFieldInputs()}
       {renderActions()}
-    </View>
+    </ScrollView>
   );
 };
 

@@ -99,13 +99,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   errorStyle: {
-    color: 'red',
-    borderColor: 'red',
+    color: 'darkred',
+    borderColor: 'darkred',
+    borderWidth: 3,
   },
   errorText: {
     color: 'red',
     margin: 2,
     fontSize: 12,
+    letterSpacing: 1,
   },
 });
 

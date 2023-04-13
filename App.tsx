@@ -1,11 +1,17 @@
-import { Provider } from 'react-redux';
-import { StatusBar } from 'expo-status-bar';
+import { Provider, useSelector } from 'react-redux';
+import { store } from './store/store';
+import { getAuth } from 'firebase/auth';
 import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { store } from './store/store';
+import { StatusBar } from 'expo-status-bar';
 import ToastView from './components/view/ToastView';
 import AuthorizedNavigator from './navigators/AuthorizedNavigator';
 import AuthNavigator from './navigators/AuthNavigator';
+
+const Routes = () => {
+  const IsAuthenticated = useSelector((state: any) => state.user.email !== '');
+  return IsAuthenticated ? <AuthorizedNavigator /> : <AuthNavigator />;
+};
 
 export default function App() {
   return (
@@ -13,8 +19,7 @@ export default function App() {
       <StatusBar style="light" />
       <NavigationContainer>
         <Provider store={store}>
-          <AuthNavigator />
-          {/* <AuthorizedNavigator /> */}
+          <Routes />
           <ToastView />
         </Provider>
       </NavigationContainer>
