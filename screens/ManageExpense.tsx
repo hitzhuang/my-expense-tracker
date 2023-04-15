@@ -1,5 +1,5 @@
 import { useLayoutEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { View } from 'react-native';
 import {
   addExpense,
@@ -22,6 +22,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 const ManageExpense = ({ route, navigation }: any) => {
   const id = route.params?.id;
   const dispatch = useDispatch();
+  const userId = useSelector((state: any) => state.user.email);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -34,10 +35,12 @@ const ManageExpense = ({ route, navigation }: any) => {
     try {
       let msg = 'Expense has been added.';
       if (data.id === undefined) {
-        dispatch(addExpense(await createDatabaseExpense(data)));
+        dispatch(addExpense(await createDatabaseExpense(userId, data)));
       } else {
         msg = 'Expense has been updated.';
-        dispatch(updateExpense(await updateDatabaseExpense(data.id, data)));
+        dispatch(
+          updateExpense(await updateDatabaseExpense(userId, data.id, data))
+        );
       }
       Toast.show({ type: 'success', text1: msg });
       handleClose();
@@ -50,7 +53,7 @@ const ManageExpense = ({ route, navigation }: any) => {
   const handleDelete = async () => {
     dispatch(setLoading(true));
     try {
-      dispatch(removeExpense(await deleteDatabaseExpense(id)));
+      dispatch(removeExpense(await deleteDatabaseExpense(userId, id)));
       Toast.show({ type: 'success', text1: 'Expense has been deleted.' });
       handleClose();
     } catch (error) {

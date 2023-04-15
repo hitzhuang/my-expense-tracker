@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { createExpense } from '../firebase/expense';
+// import { createExpense } from '../firebase/expense';
 import { Timestamp } from 'firebase/firestore';
 
 const EXPENSE: any[] = [];
@@ -17,7 +17,7 @@ for (let i = 0; i < 50; i++) {
   //   ...data,
   // });
 
-  EXPENSE.push(createExpense({ ...data }));
+  // EXPENSE.push(createExpense({ ...data }));
 }
 
 EXPENSE.sort((a, b) => b.date - a.date);

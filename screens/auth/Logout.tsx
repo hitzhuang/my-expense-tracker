@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserOff } from '../../store/redux/user';
+import { initExpense } from '../../store/redux/expense';
 import { setLoading } from '../../store/redux/loading';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { signoutUser } from '../../firebase/user';
@@ -18,6 +19,7 @@ const Logout = () => {
     signoutUser()
       .then((res: any) => {
         dispatch(setUserOff());
+        dispatch(initExpense([]));
         Toast.show({ type: 'success', text1: res });
       })
       .catch((error) => Toast.show({ type: 'failure', text1: error }))
