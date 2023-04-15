@@ -9,7 +9,7 @@ import AuthorizedNavigator from './navigators/AuthorizedNavigator';
 import AuthNavigator from './navigators/AuthNavigator';
 
 const Routes = () => {
-  const IsAuthenticated = useSelector((state: any) => state.user.email !== '');
+  const IsAuthenticated = useSelector((state: any) => state.user.isAuthorized);
   return IsAuthenticated ? <AuthorizedNavigator /> : <AuthNavigator />;
 };
 

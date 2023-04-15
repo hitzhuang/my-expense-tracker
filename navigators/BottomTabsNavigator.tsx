@@ -4,9 +4,10 @@ import appStyles from '../styles/appStyles';
 import IconButton from '../components/IconButton';
 import AllExpense from '../screens/AllExpense';
 import RecentExpense from '../screens/RecentExpense';
+import Logout from '../screens/auth/Logout';
 
 const BottomTabs = createBottomTabNavigator();
-const ExpenseOverview = ({ navigation }: any) => (
+const BottomTabsNavigator = ({ navigation }: any) => (
   <BottomTabs.Navigator
     screenOptions={{
       headerStyle: {
@@ -47,7 +48,16 @@ const ExpenseOverview = ({ navigation }: any) => (
         ),
       }}
     />
+    <BottomTabs.Screen
+      name="Logout"
+      component={Logout}
+      options={{
+        tabBarIcon: ({ size, color }) => (
+          <MaterialIcons name="logout" size={size} color={color} />
+        ),
+      }}
+    />
   </BottomTabs.Navigator>
 );
 
-export default ExpenseOverview;
+export default BottomTabsNavigator;

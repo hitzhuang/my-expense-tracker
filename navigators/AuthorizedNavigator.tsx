@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import appStyles from '../styles/appStyles';
-import ExpenseOverview from './ExpenseOverview';
+import BottomTabsNavigator from './BottomTabsNavigator';
 import ManageExpense from '../screens/ManageExpense';
 
 const Stack = createNativeStackNavigator();
@@ -19,7 +19,7 @@ const AuthorizedNavigator = () => (
   >
     <Stack.Screen
       name="Expense Overview"
-      component={ExpenseOverview}
+      component={BottomTabsNavigator}
       options={{
         headerShown: false,
       }}

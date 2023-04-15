@@ -37,7 +37,7 @@ export const signoutUser = () => {
   return new Promise(async (resolve, reject) => {
     try {
       await signOut(getAuth());
-      return resolve('ok');
+      return resolve('User has been logout.');
     } catch (error: any) {
       console.log(error);
       return reject(error.code);
