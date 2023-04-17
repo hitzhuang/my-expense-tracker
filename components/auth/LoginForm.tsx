@@ -1,57 +1,53 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { ScrollView, Text, View } from 'react-native';
-import appStyles from '../styles/appStyles';
-import authStyles from '../styles/authStyles';
-import ActionButton from './ActionButton';
-import FormTextInput from './FormTextInput';
-import { loginUser } from '../firebase/user';
-import { setLoading } from '../store/redux/loading';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { useDispatch } from 'react-redux';
+import { setLoading } from '../../store/redux/loading';
+import { loginUser } from '../../firebase/user';
+import appStyles from '../../styles/appStyles';
+import authStyles from '../../styles/authStyles';
+import ActionButton from '../ActionButton';
+import FormTextInput from '../FormTextInput';
+import useRequiredFields from '../../hooks/useRequiredFields';
 
 interface LoginFormProps {
   gotoSignup: () => void;
+  gotoPasswordReset: () => void;
   onLogin: (user: any) => void;
 }
 
-const LoginForm = ({ gotoSignup, onLogin }: LoginFormProps) => {
+const LoginForm = ({
+  gotoSignup,
+  gotoPasswordReset,
+  onLogin,
+}: LoginFormProps) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<any>({});
+  const { errors, setErrors, checkFields, hasAnyError } = useRequiredFields();
 
   const handleLogin = () => {
-    let defaultErrors: any = {};
-    if (!email) {
-      defaultErrors['email'] = 'Field is required.';
-    }
-    if (!password) {
-      defaultErrors['password'] = 'Field is required.';
-    }
-    if (Object.keys(defaultErrors).length !== 0) {
-      setErrors(defaultErrors);
-      return;
-    }
+    if (hasAnyError(checkFields({ email, password }, {}))) return;
+
     dispatch(setLoading(true));
-    loginUser(email, password)
+    loginUser(email.toLocaleLowerCase(), password)
       .then((user) => onLogin(user))
       .catch((error: string) => {
         switch (error) {
           case 'auth/user-not-found':
-            defaultErrors['email'] = 'Unknown user email.';
+            setErrors({ email: 'Unknown user email.' });
             break;
           case 'auth/invalid-email':
-            defaultErrors['email'] = 'Invalid email format.';
+            setErrors({ email: 'Invalid email format.' });
             break;
           case 'auth/wrong-password':
-            defaultErrors['password'] = 'Password incorrect.';
+            setErrors({ password: 'Password incorrect.' });
+            setPassword('');
             break;
           default:
             Toast.show({ type: 'failure', text1: error });
             break;
         }
-        setPassword('');
-        setErrors(defaultErrors);
       })
       .finally(() => dispatch(setLoading(false)));
   };
@@ -78,6 +74,12 @@ const LoginForm = ({ gotoSignup, onLogin }: LoginFormProps) => {
 
   const renderActions = () => (
     <View style={authStyles.button}>
+      <Text
+        style={[authStyles.text, { marginTop: 0 }]}
+        onPress={gotoPasswordReset}
+      >
+        Forgot your Password?
+      </Text>
       <ActionButton
         title="Login In"
         color={appStyles.colors.lightColor}

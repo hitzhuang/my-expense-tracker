@@ -17,7 +17,7 @@ const authStyles = StyleSheet.create({
     fontSize: 16,
     color: appStyles.colors.lightColor,
     textAlign: 'center',
-    marginVertical: 20,
+    marginVertical: 30,
     letterSpacing: 1,
     textDecorationLine: 'underline',
   },

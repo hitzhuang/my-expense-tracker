@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'space-between',
     marginHorizontal: 5,
+    marginVertical: 1,
   },
   label: {
     fontWeight: 'bold',

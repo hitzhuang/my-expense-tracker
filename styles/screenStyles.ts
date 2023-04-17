@@ -5,7 +5,8 @@ const screenStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: appStyles.colors.darkColor,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 20,
   },
   title: {
     color: appStyles.colors.lightColor,

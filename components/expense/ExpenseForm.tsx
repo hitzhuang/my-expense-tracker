@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import appStyles from '../../styles/appStyles';
-import ActionButton from '../ActionButton';
 import FormTextInput from '../FormTextInput';
+import ConfirmCancelButtons from '../ConfirmCancelButtons';
 
 interface ExpenseFormProps {
   data?: any;
@@ -71,30 +71,15 @@ const ExpenseForm = ({ data, onCancel, onConfirm }: ExpenseFormProps) => {
       </View>
     </View>
   );
-  const renderConfirmOrCancelButtons = () => (
-    <View style={styles.buttons}>
-      <View style={{ flex: 1, marginHorizontal: 5 }}>
-        <ActionButton
-          title="Cancel"
-          color={appStyles.colors.darkColor}
-          backgroundColor={appStyles.colors.lightGrayColor}
-          onPress={onCancel}
-        />
-      </View>
-      <View style={{ flex: 1, marginHorizontal: 5 }}>
-        <ActionButton
-          title={data ? 'Update' : 'Add'}
-          color={appStyles.colors.lightColor}
-          backgroundColor={appStyles.colors.darkGoldColor}
-          onPress={handleConfirm}
-        />
-      </View>
-    </View>
-  );
+
   return (
     <SafeAreaView style={styles.container}>
       {renderTextInputs()}
-      {renderConfirmOrCancelButtons()}
+      <ConfirmCancelButtons
+        confirmLabel={data ? 'Update' : 'Add'}
+        onCancel={onCancel}
+        onConfirm={handleConfirm}
+      />
     </SafeAreaView>
   );
 };
@@ -107,12 +92,6 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     borderBottomColor: appStyles.colors.grayColor,
     borderBottomWidth: 1,
-  },
-
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginVertical: 20,
   },
   inputStyle: {
     color: appStyles.colors.darkGoldColor,

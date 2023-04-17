@@ -1,6 +1,5 @@
 import { Provider, useSelector } from 'react-redux';
 import { store } from './store/store';
-import { getAuth } from 'firebase/auth';
 import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';

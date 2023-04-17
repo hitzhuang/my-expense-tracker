@@ -1,3 +1,4 @@
+import { DB, EXPENSE_PATH } from './config';
 import {
   Timestamp,
   addDoc,
@@ -10,7 +11,6 @@ import {
   query,
   updateDoc,
 } from 'firebase/firestore';
-import { DB, EXPENSE_PATH } from './config';
 
 export const createDatabaseExpense = (userId: string, data: any) => {
   return new Promise(async (resolve, reject) => {
@@ -52,7 +52,6 @@ export const updateDatabaseExpense = (
 export const deleteDatabaseExpense = (userId: string, id: string) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log(EXPENSE_PATH + 'a');
       let docRef = doc(DB, EXPENSE_PATH(userId), id);
       let snapshot = await getDoc(docRef);
       if (snapshot.exists()) await deleteDoc(docRef);

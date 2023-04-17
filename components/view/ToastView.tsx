@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   success: {
-    backgroundColor: appStyles.colors.darkGoldColor,
+    backgroundColor: appStyles.colors.lightGoldColor,
   },
   failure: {
     backgroundColor: appStyles.colors.redColor,
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: 'bold',
     color: appStyles.colors.lightColor,
+    textAlign: 'center',
   },
 });
 

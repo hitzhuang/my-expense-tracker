@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import ActionButton from './ActionButton';
-import appStyles from '../styles/appStyles';
-import FormTextInput from './FormTextInput';
-import authStyles from '../styles/authStyles';
-import { useDispatch } from 'react-redux';
-import { setLoading } from '../store/redux/loading';
-import { signupUser } from '../firebase/user';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { useDispatch } from 'react-redux';
+import { setLoading } from '../../store/redux/loading';
+import { signupUser } from '../../firebase/user';
+import appStyles from '../../styles/appStyles';
+import authStyles from '../../styles/authStyles';
+import ActionButton from '../ActionButton';
+import FormTextInput from '../FormTextInput';
+import useRequiredFields from '../../hooks/useRequiredFields';
 
 interface SignupFormProps {
   gotoLogin: () => void;
@@ -20,46 +21,33 @@ const SignupForm = ({ gotoLogin, onSignup }: SignupFormProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [recheckPassword, setRecheckPassword] = useState('');
-  const [errors, setErrors] = useState<any>({});
+  const { errors, setErrors, checkFields, hasAnyError } = useRequiredFields();
 
   const handleSignup = () => {
-    let defaultErrors: any = {};
-    if (!name) {
-      defaultErrors['name'] = 'Field is required.';
-    }
-    if (!email) {
-      defaultErrors['email'] = 'Field is required.';
-    }
-    if (!password) {
-      defaultErrors['password'] = 'Field is required.';
-    }
-    if (!recheckPassword) {
-      defaultErrors['recheckPassword'] = 'Field is required.';
-    }
-    if (password !== recheckPassword) {
-      defaultErrors['password'] = 'Password is not matched.';
-      defaultErrors['recheckPassword'] = 'Confirm Password is not matched.';
-    }
-    if (Object.keys(defaultErrors).length !== 0) {
-      setErrors(defaultErrors);
-      return;
-    }
+    let fields = { name, email, password, recheckPassword };
+    let passwordError = 'Password is not matched.';
+    let recheckError = 'Confirm Password is not matched.';
+    let otherErrors =
+      password !== recheckPassword
+        ? { password: passwordError, recheckPassword: recheckError }
+        : {};
+    if (hasAnyError(checkFields(fields, otherErrors))) return;
+
     dispatch(setLoading(true));
     signupUser(name, email, password)
       .then((user) => onSignup(user))
       .catch((error: string) => {
         switch (error) {
           case 'auth/invalid-email':
-            defaultErrors['email'] = 'Invalid email format.';
+            setErrors({ email: 'Invalid email format.' });
             break;
           case 'auth/email-already-in-use':
-            defaultErrors['email'] = 'Email has been taken.';
+            setErrors({ email: 'Email has been taken.' });
             break;
           default:
             Toast.show({ type: 'failure', text1: error });
             break;
         }
-        setErrors(defaultErrors);
       })
       .finally(() => dispatch(setLoading(false)));
   };
